@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Nhập</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Phần hiển thị thông báo flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    
+    <div class="container">
+        <h2>Database App</h2>
+        <form action="{{ url_for('login') }}" method="POST">
+            <label for="db_name">DB Name:</label>
+            <input type="text" id="db_name" name="db_name" required value="managerment">
+            
+            <label for="user">User:</label>
+            <input type="text" id="user" name="user" required value="postgres">
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <label for="host">Host:</label>
+            <input type="text" id="host" name="host" required value="localhost">
+            
+            <label for="port">Port:</label>
+            <input type="text" id="port" name="port" required value="5432">
+            
+            <button type="submit">Connect</button>
+        </form>
+    </div>
+</body>
+</html>

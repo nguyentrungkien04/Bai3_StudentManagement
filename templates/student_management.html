@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Sinh Viên</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <h2>QUẢN LÝ SINH VIÊN</h2>
+        <button onclick="switchToScoreManagement()">Chuyển Sang Quản Lý Điểm</button>
+        <ul>
+            {% for student in students %}
+                <li>{{ student.name }} - {{ student.student_id }} - {{ student.birth_year }}</li>
+            {% endfor %}
+        </ul>
+        <form action="{{ url_for('add_student') }}" method="POST">
+            <label>Nhập tên Sinh Viên:</label>
+            <input type="text" name="student_name" required>
+
+            <label>Nhập mã số Sinh Viên:</label>
+            <input type="text" name="student_id" required>
+
+            <label>Nhập năm sinh Sinh Viên:</label>
+            <input type="text" name="birth_year" required>
+
+            <button type="submit">Thêm</button>
+        </form>
+
+    </div>
+
+    <script>
+    // Chuyển đến trang "Quản Lý Điểm"
+    function switchToScoreManagement() {
+        window.location.href = "{{ url_for('score_management') }}";
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Điểm</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <h2>QUẢN LÝ ĐIỂM</h2>
+        <button onclick="switchToStudentManagement()">Quay Lại Quản Lý Sinh Viên</button>
+        
+        <!-- Dropdown chọn sinh viên -->
+        <label>Chọn Sinh Viên:</label>
+        <select name="student_id" id="student_id" required>
+            <option value="" disabled selected>Chọn sinh viên</option>
+            {% for student in students %}
+                <option value="{{ student.student_id }}">{{ student.name }} - {{ student.student_id }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Form nhập điểm cho sinh viên -->
+        <form action="{{ url_for('add_score') }}" method="POST">
+            <input type="hidden" name="student_id" id="selected_student_id">
+            
+            <label>Nhập điểm Toán:</label>
+            <input type="number" name="math_score" required>
+
+            <label>Nhập điểm Văn:</label>
+            <input type="number" name="literature_score" required>
+
+            <label>Nhập điểm Anh:</label>
+            <input type="number" name="english_score" required>
+
+            <button type="submit">Nhập Điểm</button>
+        </form>
+
+        <!-- Nút xuất dữ liệu -->
+        <form action="{{ url_for('export_scores') }}" method="GET" style="margin-top: 20px;">
+            <button type="submit">Xuất Dữ Liệu</button>
+        </form>
+
+    </div>
+
+    <script>
+    // Cập nhật giá trị `student_id` khi chọn sinh viên từ dropdown
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('student_id').addEventListener('change', function() {
+            document.getElementById('selected_student_id').value = this.value;
+        });
+    });
+
+    // Chuyển đến trang "Quản Lý Sinh Viên"
+    function switchToStudentManagement() {
+        window.location.href = "{{ url_for('dashboard') }}";
+    }
+    </script>
+</body>
+</html>
